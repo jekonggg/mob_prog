@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F8FAED"
+    android:padding="16dp"
+    tools:context=".AllowanceActivity">
+
+    <!-- Title Text -->
+    <TextView
+        android:id="@+id/titleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SETUP ALLOWANCE ACTIVITY"
+        android:textSize="24sp"
+        android:textColor="#50A65C"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Username Label -->
+    <TextView
+        android:id="@+id/usernameLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="USERNAME"
+        android:textSize="15sp"
+        android:textColor="#50A65C"
+        android:layout_marginBottom="8dp" />
+
+    <!-- Username Input Field -->
+    <EditText
+        android:id="@+id/usernameInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter username"
+        android:inputType="text"
+        android:textColorHint="#808080"
+        android:textColor="#232323"
+        android:backgroundTint="#C0C0C0"
+        android:padding="8dp"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Password Label -->
+    <TextView
+        android:id="@+id/passwordLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="PASSWORD"
+        android:textSize="15sp"
+        android:textColor="#50A65C"
+        android:layout_marginBottom="8dp" />
+
+    <!-- Password Input Field -->
+    <EditText
+        android:id="@+id/passwordInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter password"
+        android:inputType="textPassword"
+        android:textColorHint="#808080"
+        android:textColor="#232323"
+        android:backgroundTint="#C0C0C0"
+        android:padding="8dp"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Email Address Label -->
+    <TextView
+        android:id="@+id/emailLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="EMAIL ADDRESS"
+        android:textSize="15sp"
+        android:textColor="#50A65C"
+        android:layout_marginBottom="8dp" />
+
+    <!-- Email Address Input Field -->
+    <EditText
+        android:id="@+id/emailInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter email address"
+        android:inputType="textEmailAddress"
+        android:textColorHint="#808080"
+        android:textColor="#232323"
+        android:backgroundTint="#C0C0C0"
+        android:padding="8dp"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Allowance Label -->
+    <TextView
+        android:id="@+id/allowanceLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ENTER ALLOWANCE"
+        android:textSize="15sp"
+        android:textColor="#50A65C"
+        android:layout_marginBottom="8dp" />
+
+    <!-- Allowance Amount Input Field -->
+    <EditText
+        android:id="@+id/amountInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter allowance amount"
+        android:inputType="numberDecimal"
+        android:textColorHint="#808080"
+        android:textColor="#232323"
+        android:backgroundTint="#C0C0C0"
+        android:padding="8dp"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Amount Frequency Label -->
+    <TextView
+        android:id="@+id/amountText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="AMOUNT FREQUENCY"
+        android:textSize="15sp"
+        android:textColor="#50A65C"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Frequency Spinner -->
+    <Spinner
+        android:id="@+id/frequencySpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#50A65C"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Submit Button -->
+    <Button
+        android:id="@+id/submitButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        android:textColor="#F8FAED"
+        android:backgroundTint="#50A65C" />
+
+</LinearLayout>

@@ -1,7 +1,10 @@
 <resources>
     <!-- Existing colors -->
-    <color name="white">#FFFFFF</color>
-    <color name="black">#000000</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="green_500">#53a55d</color>
+    <color name="light_gray">#FAFAFA</color>
+    <color name="green_100">#7dad80</color>
 
     <!-- Primary Color -->
     <color name="primaryColor">#6200EE</color> <!-- Example: Material Purple -->

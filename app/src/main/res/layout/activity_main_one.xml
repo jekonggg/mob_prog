@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F8FAED"
+    android:padding="16dp"
+    android:gravity="center"
+    tools:context=".MainActivity">
+
+    <!-- Welcome Text -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Testing"
+        android:textSize="24sp"
+        android:textColor="#232323"
+        android:layout_marginBottom="24dp" />
+
+
+
+    <!-- Get Started Button -->
+    <Button
+        android:id="@+id/getStartedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Get Started"
+        android:textColor="#F8FAED"
+        android:backgroundTint="#50A65C"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Navigate to Allowance Activity Button -->
+    <Button
+        android:id="@+id/navigateToAllowanceButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Go to Allowance"
+        android:textColor="#F8FAED"
+        android:backgroundTint="#50A65C" />
+
+</LinearLayout>

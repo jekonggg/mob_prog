@@ -5,4 +5,10 @@
     <string name="label_date">Date</string>
     <string name="label_time">Time</string>
     <string name="label_notes">Notes</string>
+
+    <string-array name="frequency_options">
+        <item>Daily</item>
+        <item>Weekly</item>
+        <item>Monthly</item>
+    </string-array>
 </resources>

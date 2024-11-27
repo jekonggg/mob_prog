@@ -1,163 +1,98 @@
 package com.example.finals_sizcco;
 
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AdapterView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.Calendar;
-
 public class MainActivity extends AppCompatActivity {
 
-    // Declare variables for UI elements
-    private TextView tvPriceLabel, tvCategoryLabel, tvDateLabel, tvTimeLabel, tvNotesLabel, etDate, etTime;
-    private EditText etPrice, etNotes;
-    private Spinner spinnerCategory;
-    private ImageView categoryIcon;
-    private Button btnAddRecord, btnCancel;
-
-    // Declare variables for dynamic values
-    private String[] categories = {"Food", "Transport", "Entertainment", "Utilities", "Online Shopping", "Others"};
-    private String selectedCategory = null;
-    private String price = "";
-    private String date = "";
-    private String time = "";
-    private String notes = "";
+    private Button btnAddRecord;
+    private Button btnEditRecord;
+    private Button btnViewRecords;  // Add new button for viewing records
+    private static final int EDIT_RECORD_REQUEST_CODE = 1001;
+    private DatabaseHelper databaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Initialize UI elements
-        tvPriceLabel = findViewById(R.id.tvPriceLabel);
-        tvCategoryLabel = findViewById(R.id.tvCategoryLabel);
-        tvDateLabel = findViewById(R.id.tvDateLabel);
-        tvTimeLabel = findViewById(R.id.tvTimeLabel);
-        tvNotesLabel = findViewById(R.id.tvNotesLabel);
-        etPrice = findViewById(R.id.etPrice);
-        etNotes = findViewById(R.id.etNotes);
-        etDate = findViewById(R.id.etDate); // Use TextView or EditText for Date
-        etTime = findViewById(R.id.etTime); // Use TextView or EditText for Time
-        spinnerCategory = findViewById(R.id.spinnerCategory);
-        categoryIcon = findViewById(R.id.categoryIcon);
+        // Initialize buttons
         btnAddRecord = findViewById(R.id.btnAddRecord);
-        btnCancel = findViewById(R.id.btnCancel);
+        btnEditRecord = findViewById(R.id.btnEditRecord);
+        btnViewRecords = findViewById(R.id.btnViewRecords);  // Initialize View Records button
+        databaseHelper = new DatabaseHelper(this);
 
-        // Set dynamic values
-        tvPriceLabel.setText(getString(R.string.label_price));
-        tvCategoryLabel.setText(getString(R.string.label_category));
-        tvDateLabel.setText(getString(R.string.label_date));
-        tvTimeLabel.setText(getString(R.string.label_time));
-        tvNotesLabel.setText(getString(R.string.label_notes));
+        // Navigate to AddRecordActivity when "Add Record" button is clicked
+        btnAddRecord.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent addIntent = new Intent(MainActivity.this, AddRecordActivity.class);
+                startActivity(addIntent);
+            }
+        });
 
-        // Set Spinner (Category options)
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, categories);
-        spinnerCategory.setAdapter(adapter);
+        // Navigate to EditRecordActivity when "Edit Record" button is clicked
+        btnEditRecord.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Pass sample data to EditRecordActivity, including category
+                Intent editIntent = new Intent(MainActivity.this, EditRecordActivity.class);
+                editIntent.putExtra("price", "500.00");  // Example price
+                editIntent.putExtra("date", "2024-11-27");  // Example date
+                editIntent.putExtra("time", "14:30");  // Example time
+                editIntent.putExtra("notes", "This is a sample note.");  // Example notes
+                editIntent.putExtra("category", "Food");  // Example category
+                startActivity(editIntent);
+            }
+        });
 
-        // Add click listener to the "Add Record" button
-        btnAddRecord.setOnClickListener(v -> {
-            price = etPrice.getText().toString();
-            date = etDate.getText().toString();
-            time = etTime.getText().toString();
-            notes = etNotes.getText().toString();
+        // Navigate to ViewRecordsActivity when "View Records" button is clicked
+        btnViewRecords.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent viewIntent = new Intent(MainActivity.this, ViewRecordsActivity.class);
+                startActivity(viewIntent);
+            }
+        });
+    }
 
-            // Check if all fields are filled
-            if (price.isEmpty() || date.isEmpty() || time.isEmpty() || notes.isEmpty() || selectedCategory == null) {
-                Toast.makeText(MainActivity.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+    private void openEditRecordActivity(String price, String date, String time, String notes) {
+        Intent intent = new Intent(MainActivity.this, EditRecordActivity.class);
+        intent.putExtra("price", price);
+        intent.putExtra("date", date);
+        intent.putExtra("time", time);
+        intent.putExtra("notes", notes);
+        startActivityForResult(intent, EDIT_RECORD_REQUEST_CODE);  // Expect a result back
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == EDIT_RECORD_REQUEST_CODE && resultCode == RESULT_OK) {
+            // Retrieve updated data from EditRecordActivity
+            int id = data.getIntExtra("id", -1);
+            String updatedPrice = data.getStringExtra("updatedPrice");
+            String updatedDate = data.getStringExtra("updatedDate");
+            String updatedTime = data.getStringExtra("updatedTime");
+            String updatedNotes = data.getStringExtra("updatedNotes");
+            String category = data.getStringExtra("category");  // Get category data
+
+            // Update the record in the database
+            boolean success = databaseHelper.updateRecord(id, updatedPrice, updatedDate, updatedTime, updatedNotes, category);
+
+            if (success) {
+                // Show success message or update the UI accordingly
+                Toast.makeText(MainActivity.this, "Record updated successfully!", Toast.LENGTH_SHORT).show();
             } else {
-                // Handle the record addition
-                Toast.makeText(MainActivity.this, "Record Added: " + price + " - " + selectedCategory, Toast.LENGTH_SHORT).show();
+                // Handle failure
+                Toast.makeText(MainActivity.this, "Failed to update record.", Toast.LENGTH_SHORT).show();
             }
-        });
-
-        // Add click listener to the "Cancel" button
-        btnCancel.setOnClickListener(v -> finish());  // Close the activity
-
-        // Set the selected category when an item is chosen from the Spinner
-        spinnerCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                selectedCategory = categories[position];
-                // Update the category icon based on the selected category
-                updateCategoryIcon(selectedCategory);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parentView) {
-                // Handle case where no category is selected
-                selectedCategory = null;
-            }
-        });
-
-        // Set click listener for the Date field
-        etDate.setOnClickListener(v -> showDatePickerDialog());
-
-        // Set click listener for the Time field
-        etTime.setOnClickListener(v -> showTimePickerDialog());
-    }
-
-    // Method to update the category icon based on the selected category
-    private void updateCategoryIcon(String category) {
-        switch (category) {
-            case "Food":
-                categoryIcon.setImageResource(R.drawable.food_icon); // Set the appropriate drawable for Food
-                break;
-            case "Transport":
-                categoryIcon.setImageResource(R.drawable.transportation_icon); // Set the appropriate drawable for Transport
-                break;
-            case "Entertainment":
-                categoryIcon.setImageResource(R.drawable.entertainment_icon); // Set the appropriate drawable for Entertainment
-                break;
-            case "Utilities":
-                categoryIcon.setImageResource(R.drawable.utilities_icon); // Set the appropriate drawable for Utilities
-                break;
-            case "Online Shopping":
-                categoryIcon.setImageResource(R.drawable.shopping_icon); // Set the appropriate drawable for Shopping
-                break;
-            case "Others":
-                categoryIcon.setImageResource(R.drawable.others_icon); // Set the appropriate drawable for Others
-                break;
-            default:
-                categoryIcon.setImageResource(R.drawable.category); // Set a default icon
-                break;
         }
-    }
-
-    // Method to show DatePickerDialog
-    private void showDatePickerDialog() {
-        final Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
-
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this, (view, year1, monthOfYear, dayOfMonth) -> {
-            // Set the date to the EditText
-            etDate.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year1);
-        }, year, month, day);
-        datePickerDialog.show();
-    }
-
-    // Method to show TimePickerDialog
-    private void showTimePickerDialog() {
-        final Calendar calendar = Calendar.getInstance();
-        int hour = calendar.get(Calendar.HOUR_OF_DAY);
-        int minute = calendar.get(Calendar.MINUTE);
-
-        TimePickerDialog timePickerDialog = new TimePickerDialog(this, (view, hourOfDay, minute1) -> {
-            // Set the time to the EditText
-            etTime.setText(hourOfDay + ":" + String.format("%02d", minute1));
-        }, hour, minute, true);
-        timePickerDialog.show();
     }
 }

@@ -1,220 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
-    android:background="@color/white">
+    android:gravity="center"
+    android:padding="16dp">
 
-    <!-- Title Bar with Cancel (X) Button -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical|end">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Add Expense"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:gravity="start"
-            android:paddingStart="8dp" />
-
-        <Button
-            android:id="@+id/btnCancel"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:background="@drawable/ic_close"
-            android:contentDescription="Cancel" />
-    </LinearLayout>
-
-    <!-- Tab Layout for Expense and Allowance -->
-    <LinearLayout
-        android:id="@+id/tabLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:paddingTop="8dp">
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:clickable="true"
-            android:id="@+id/tabExpense"
-            android:focusable="true">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Expense"
-                android:textSize="16sp"
-                android:layout_gravity="center"
-                android:textStyle="bold"/>
-
-            <View
-                android:id="@+id/underline_expense"
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="@color/primaryColor"
-                android:visibility="visible"/>
-        </LinearLayout>
-
-        <!-- Allowance Tab -->
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:clickable="true"
-            android:focusable="true"
-            android:id="@+id/tabAllowance">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Allowance"
-                android:textSize="16sp"
-                android:layout_gravity="center"
-                android:textStyle="bold"/>
-
-            <View
-                android:id="@+id/underline_allowance"
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="@color/primaryColor"
-                android:visibility="invisible"/>
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <!-- Label for Price -->
-    <TextView
-        android:id="@+id/tvPriceLabel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Price"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:layout_marginTop="8dp"
-        android:gravity="center"
-        android:layout_marginBottom="4dp" />
-
-    <!-- Price EditText -->
-    <EditText
-        android:id="@+id/etPrice"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="P 0.00"
-        android:gravity="center"
-        android:textSize="50sp"
-        android:textStyle="bold"
-        android:inputType="numberDecimal"
-        android:layout_marginBottom="8dp"
-        android:background="@android:color/transparent" />
-
-
-    <!-- Label for Category -->
-    <TextView
-        android:id="@+id/tvCategoryLabel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Category"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="4dp" />
-
-    <!-- Category Spinner (Combo Box) -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="8dp"
-        android:gravity="center_vertical">
-
-        <Spinner
-            android:id="@+id/spinnerCategory"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:spinnerMode="dropdown" />
-
-        <!-- Icon for Category -->
-        <ImageView
-            android:id="@+id/categoryIcon"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginStart="8dp"
-            android:contentDescription="Category Icon"
-            android:src="@drawable/category" />
-    </LinearLayout>
-
-    <!-- Label and Date Input -->
-    <TextView
-        android:id="@+id/tvDateLabel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Date"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="4dp" />
-
-    <EditText
-        android:id="@+id/etDate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Select Date"
-        android:inputType="date"
-        android:layout_marginBottom="8dp" />
-
-    <!-- Label and Time Input -->
-    <TextView
-        android:id="@+id/tvTimeLabel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Time"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="4dp" />
-
-    <EditText
-        android:id="@+id/etTime"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Select Time"
-        android:inputType="time"
-        android:layout_marginBottom="8dp" />
-
-    <!-- Label and Notes Input -->
-    <TextView
-        android:id="@+id/tvNotesLabel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Notes"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="4dp" />
-
-    <EditText
-        android:id="@+id/etNotes"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Add Notes"
-        android:inputType="textMultiLine"
-        android:minLines="3"
-        android:gravity="top"
-        android:layout_marginBottom="16dp" />
-
-    <!-- Add Record Button -->
+    <!-- Button to Add Record -->
     <Button
         android:id="@+id/btnAddRecord"
         android:layout_width="match_parent"
@@ -223,6 +16,25 @@
         android:background="@drawable/rounded_button"
         android:textColor="@color/white"
         android:layout_marginBottom="16dp" />
+
+    <!-- Button to Edit Record -->
+    <Button
+        android:id="@+id/btnEditRecord"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Edit Record"
+        android:background="@drawable/rounded_button"
+        android:textColor="@color/white"
+        android:layout_marginBottom="16dp" />
+
+    <Button
+        android:id="@+id/btnViewRecords"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="View Records"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/rounded_button"
+        android:layout_centerHorizontal="true"/>
 
 
 </LinearLayout>
