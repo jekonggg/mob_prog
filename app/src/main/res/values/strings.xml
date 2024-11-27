@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">FINALS_SIZCCO</string>
+    <string name="label_price">Price</string>
+    <string name="label_category">Category</string>
+    <string name="label_date">Date</string>
+    <string name="label_time">Time</string>
+    <string name="label_notes">Notes</string>
+</resources>
