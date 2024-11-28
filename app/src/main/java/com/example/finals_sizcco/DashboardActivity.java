@@ -59,7 +59,7 @@ public class DashboardActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Navigate to Transactions Activity
-                Intent intent = new Intent(DashboardActivity.this, TransactionsActivity.class);
+                Intent intent = new Intent(DashboardActivity.this, ViewRecordsActivity.class);
                 startActivity(intent);
             }
         });

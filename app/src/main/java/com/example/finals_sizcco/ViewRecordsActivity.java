@@ -26,10 +26,10 @@ public class ViewRecordsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_records);
+        setContentView(R.layout.activity_view_expenses);
 
         // Initialize views
-        btnBack = findViewById(R.id.btnBack);  // Back button
+        btnBack = findViewById(R.id.btnClose);  // Back button
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 

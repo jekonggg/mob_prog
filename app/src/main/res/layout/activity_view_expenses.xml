@@ -5,6 +5,38 @@
     android:orientation="vertical"
     android:padding="16dp">
 
+    <!-- Header Layout -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp">
+
+        <!-- Header Title -->
+        <TextView
+            android:id="@+id/tvHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="View Expenses"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"/>
+
+        <!-- Cancel Button as Image -->
+        <ImageButton
+            android:id="@+id/btnClose"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_close"
+            android:contentDescription="Close"
+            android:background="@android:color/transparent"
+            android:scaleType="centerInside"
+            android:adjustViewBounds="true"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"/>
+
+    </RelativeLayout>
+
     <!-- TextView for "No Expenses" message -->
     <TextView
         android:id="@+id/tvNoExpenses"
@@ -32,4 +64,5 @@
         android:layout_height="wrap_content"
         android:text="Edit Expenses"
         android:layout_marginTop="10dp" />
+
 </LinearLayout>
