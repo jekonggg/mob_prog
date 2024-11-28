@@ -1,0 +1,35 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- TextView for "No Expenses" message -->
+    <TextView
+        android:id="@+id/tvNoExpenses"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="No expenses recorded yet."
+        android:visibility="gone"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:textColor="#888888" />
+
+    <!-- ListView to display expenses -->
+    <ListView
+        android:id="@+id/lvExpenses"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:divider="#cccccc"
+        android:dividerHeight="1dp" />
+
+    <!-- Button to navigate to Edit/Delete Expenses Activity -->
+    <Button
+        android:id="@+id/btnEditExpenses"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Edit Expenses"
+        android:layout_marginTop="10dp" />
+</LinearLayout>
