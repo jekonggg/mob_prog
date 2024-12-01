@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -22,8 +21,6 @@ public class AllowanceActivity extends AppCompatActivity {
     private EditText passwordInput;
     private EditText emailInput;
     private EditText amountInput;
-    private Spinner frequencySpinner;
-    private DatePicker datePicker;
     private Button submitButton;
     private DatabaseHelper dbHelper; // Database helper class to handle SQLite
 
@@ -38,7 +35,6 @@ public class AllowanceActivity extends AppCompatActivity {
         passwordInput = findViewById(R.id.passwordInput);
         emailInput = findViewById(R.id.emailInput);
         amountInput = findViewById(R.id.amountInput);
-        frequencySpinner = findViewById(R.id.frequencySpinner);
         submitButton = findViewById(R.id.submitButton);
 
         submitButton.setOnClickListener(new View.OnClickListener() {
@@ -48,14 +44,6 @@ public class AllowanceActivity extends AppCompatActivity {
             }
         });
 
-        setupFrequencySpinner();
-    }
-
-    private void setupFrequencySpinner() {
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.frequency_options, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        frequencySpinner.setAdapter(adapter);
     }
 
     private void handleFormSubmission() {
@@ -63,7 +51,6 @@ public class AllowanceActivity extends AppCompatActivity {
         String password = passwordInput.getText().toString().trim();
         String email = emailInput.getText().toString().trim();
         String amount = amountInput.getText().toString().trim();
-        String frequency = frequencySpinner.getSelectedItem().toString();
 
         if (username.isEmpty() || password.isEmpty() || email.isEmpty() || amount.isEmpty()) {
             Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
@@ -75,9 +62,12 @@ public class AllowanceActivity extends AppCompatActivity {
             return;
         }
 
-        saveDataToDatabase(username, password, email, amount, frequency);
+        saveDataToDatabase(username, password, email, amount);
 
-        String confirmationMessage = String.format("Allowance of %s is set %s starting on %tF", amount, frequency);
+        // Get the current date
+        String currentDate = Calendar.getInstance().getTime().toString(); // This returns the full date as a string
+        String confirmationMessage = String.format("Allowance of %s is set starting on %s", amount, currentDate);
+
         Toast.makeText(this, confirmationMessage, Toast.LENGTH_LONG).show();
 
         // Clear fields after submission
@@ -89,6 +79,7 @@ public class AllowanceActivity extends AppCompatActivity {
         finish(); // Close AllowanceActivity to prevent going back to it after the user presses the back button
     }
 
+
     private boolean isUsernameTaken(String username) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = db.query("users", new String[]{"username"}, "username=?", new String[]{username}, null, null, null);
@@ -98,15 +89,13 @@ public class AllowanceActivity extends AppCompatActivity {
         return exists;
     }
 
-    private void saveDataToDatabase(String username, String password, String email, String amount, String frequency) {
+    private void saveDataToDatabase(String username, String password, String email, String amount) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("username", username);
         values.put("password", password);
         values.put("email", email);
         values.put("allowance_amount", amount);
-        values.put("frequency", frequency);
-
         db.insert("users", null, values);
         db.close();
     }
@@ -116,8 +105,6 @@ public class AllowanceActivity extends AppCompatActivity {
         passwordInput.setText("");
         emailInput.setText("");
         amountInput.setText("");
-        frequencySpinner.setSelection(0);
         Calendar today = Calendar.getInstance();
-        datePicker.updateDate(today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DAY_OF_MONTH));
     }
 }

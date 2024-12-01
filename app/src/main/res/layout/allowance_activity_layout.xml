@@ -9,15 +9,34 @@
     android:padding="16dp"
     tools:context=".AllowanceActivity">
 
-    <!-- Title Text -->
-    <TextView
-        android:id="@+id/titleText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="SETUP ALLOWANCE ACTIVITY"
-        android:textSize="24sp"
-        android:textColor="#50A65C"
-        android:layout_marginBottom="16dp" />
+    <!-- Header Section with Close Button -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- Title Text -->
+        <TextView
+            android:id="@+id/titleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SETUP ALLOWANCE"
+            android:textSize="24sp"
+            android:textColor="#50A65C"
+            android:layout_marginBottom="16dp"
+            android:layout_alignParentStart="true"/>
+
+        <!-- Close Button -->
+        <ImageButton
+            android:id="@+id/closeButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_close"
+            android:layout_alignParentEnd="true"
+            android:padding="8dp"
+            android:layout_alignParentTop="true"/>
+
+
+    </RelativeLayout>
 
     <!-- Username Label -->
     <TextView
@@ -109,24 +128,6 @@
         android:textColor="#232323"
         android:backgroundTint="#C0C0C0"
         android:padding="8dp"
-        android:layout_marginBottom="16dp" />
-
-    <!-- Amount Frequency Label -->
-    <TextView
-        android:id="@+id/amountText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="AMOUNT FREQUENCY"
-        android:textSize="15sp"
-        android:textColor="#50A65C"
-        android:layout_marginBottom="16dp" />
-
-    <!-- Frequency Spinner -->
-    <Spinner
-        android:id="@+id/frequencySpinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#50A65C"
         android:layout_marginBottom="16dp" />
 
     <!-- Submit Button -->

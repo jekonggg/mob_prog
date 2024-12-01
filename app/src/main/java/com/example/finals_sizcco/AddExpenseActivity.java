@@ -2,7 +2,6 @@ package com.example.finals_sizcco;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -18,7 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Calendar;
 
-public class AddRecordActivity extends AppCompatActivity {
+public class AddExpenseActivity extends AppCompatActivity {
 
     // Declare UI and database variables
     private TextView tvPriceLabel, tvCategoryLabel, tvDateLabel, tvTimeLabel, tvNotesLabel, etDate, etTime;
@@ -28,8 +27,7 @@ public class AddRecordActivity extends AppCompatActivity {
     private Button btnAddRecord, btnCancel;
     private DatabaseHelper databaseHelper;
 
-    // User data (e.g., passed from MainActivity)
-    private String username = "JohnDoe";  // Replace with dynamic user login data
+    private String username;  // Dynamic username
 
     private String[] categories = {"Food", "Transport", "Entertainment", "Utilities", "Online Shopping", "Others"};
     private String selectedCategory = null;
@@ -38,6 +36,9 @@ public class AddRecordActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_expenses);
+
+        // Retrieve the username from the Intent
+        username = getIntent().getStringExtra("USERNAME");
 
         // Initialize UI elements and database helper
         tvPriceLabel = findViewById(R.id.tvPriceLabel);
@@ -154,4 +155,3 @@ public class AddRecordActivity extends AppCompatActivity {
         timePickerDialog.show();
     }
 }
-

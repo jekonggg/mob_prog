@@ -44,8 +44,9 @@ public class LoginActivity extends AppCompatActivity {
                     boolean isValidUser = databaseHelper.validateUserCredentials(username, password);
 
                     if (isValidUser) {
-                        // Navigate to HomeActivity (or any activity after successful login)
+                        // Navigate to DashboardActivity and pass the username
                         Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
+                        intent.putExtra("USERNAME", username);  // Pass the username to DashboardActivity
                         startActivity(intent);
                         finish(); // Close LoginActivity
                     } else {

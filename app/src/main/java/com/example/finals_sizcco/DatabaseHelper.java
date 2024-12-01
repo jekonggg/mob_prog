@@ -5,12 +5,17 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Database Name and Version
     private static final String DATABASE_NAME = "expenses.db";
-    private static final int DATABASE_VERSION = 3; // Incremented version for the new table
+    private static final int DATABASE_VERSION = 4; // Incremented version for the new table
 
     // Table Name and Columns for "records" table
     public static final String TABLE_RECORDS = "records";
@@ -24,12 +29,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_UPDATED_AT = "updated_at"; // New column for timestamp
 
     // Table Name and Columns for "users" table
-    public static final String TABLE_USERS = "users_data";
+    public static final String TABLE_USERS = "users";
     public static final String COLUMN_USERS_ID = "id";
     public static final String COLUMN_USERNAME = "username";
     public static final String COLUMN_PASSWORD = "password";
     public static final String COLUMN_EMAIL = "email";
     public static final String COLUMN_ALLOWANCE_AMOUNT = "allowance_amount"; // Column added in version 2
+
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -92,56 +98,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result != -1;  // Return true if record is inserted, false otherwise
     }
 
-    // Insert user method for "users" table
-    public boolean insertUser(String username, String password, String email, String allowanceAmount) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_USERNAME, username);
-        values.put(COLUMN_PASSWORD, password);
-        values.put(COLUMN_EMAIL, email);
-        values.put(COLUMN_ALLOWANCE_AMOUNT, allowanceAmount); // Store allowance amount in the database
-
-        long result = db.insert(TABLE_USERS, null, values);
-        db.close();
-        return result != -1;  // Return true if user is inserted, false otherwise
-    }
-
-    // Retrieve records method
-    public Cursor getAllRecords(String username) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        return db.query(TABLE_RECORDS,  // Table name
-                null,               // All columns (*)
-                COLUMN_RECORDS_USERNAME + "=?", // Where clause
-                new String[]{username},  // Where clause arguments
-                null,               // Group by
-                null,               // Having
-                COLUMN_DATE + " DESC"); // Order by
-    }
-
-    // Check if username exists in the users table
-    public boolean isUsernameExists(String username) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(TABLE_USERS,
-                new String[]{COLUMN_USERNAME},
-                COLUMN_USERNAME + "=?",
-                new String[]{username},
-                null, null, null);
-        boolean exists = cursor.getCount() > 0;
-        cursor.close();
-        db.close();
-        return exists;
-    }
-
-    // Retrieve a user by username
-    public Cursor getUserByUsername(String username) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        return db.query(TABLE_USERS,
-                null,
-                COLUMN_USERNAME + "=?",
-                new String[]{username},
-                null, null, null);
-    }
-
     // Update a record in the "records" table
     public boolean updateRecord(int id, String price, String date, String time, String notes, String category) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -180,5 +136,52 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             cursor.close();
             return false; // Invalid user
         }
+    }
+
+    // Method to get the sum of prices per category
+    public double getTotalByCategory(String category, String username) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT SUM(price) FROM " + TABLE_RECORDS +
+                " WHERE category = ? AND username = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{category, username});
+        double total = 0.0;
+        if (cursor.moveToFirst()) {
+            total = cursor.getDouble(0);
+        }
+        cursor.close();
+        db.close();
+        return total;
+    }
+
+    // Method to get the total expenses per category for a specific user
+    public HashMap<String, Double> getUserExpenses(String username) {
+        HashMap<String, Double> expenses = new HashMap<>();
+
+        // SQL query to retrieve expenses for the user, grouped by category
+        String query = "SELECT category, SUM(price) as total FROM expenses WHERE username = ? GROUP BY category";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, new String[]{username});
+
+        if (cursor != null && cursor.moveToFirst()) {
+            // Check if the columns exist
+            int categoryIndex = cursor.getColumnIndex("category");
+            int totalIndex = cursor.getColumnIndex("total");
+
+            if (categoryIndex == -1 || totalIndex == -1) {
+                Log.e("Database Error", "Column not found: category or total");
+            } else {
+                do {
+                    String category = cursor.getString(categoryIndex);
+                    double total = cursor.getDouble(totalIndex);
+                    expenses.put(category, total);
+                } while (cursor.moveToNext());
+            }
+        } else {
+            Log.e("Database Error", "Cursor is empty or invalid.");
+        }
+
+        cursor.close();
+        db.close();
+        return expenses;
     }
 }

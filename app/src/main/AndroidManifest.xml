@@ -21,13 +21,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AddRecordActivity" />
-        <activity android:name=".EditRecordActivity" />
-        <activity android:name=".ViewRecordsActivity" />
+        <activity android:name=".AddExpenseActivity" />
         <activity android:name=".AllowanceActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".DashboardActivity" />
-        <activity android:name=".TransactionsActivity" />
     </application>
 
 </manifest>
