@@ -207,7 +207,7 @@
 
                                 <!-- Price -->
                                 <TextView
-                                    android:id="@+id/transportation_total"
+                                    android:id="@+id/travel_total"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="4dp"
@@ -266,7 +266,7 @@
 
                                 <!-- Price -->
                                 <TextView
-                                    android:id="@+id/entertainment_total"
+                                    android:id="@+id/leisure_total"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="4dp"
@@ -384,7 +384,7 @@
 
                                 <!-- Price -->
                                 <TextView
-                                    android:id="@+id/miscellaneous_total"
+                                    android:id="@+id/utilities_total"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="4dp"

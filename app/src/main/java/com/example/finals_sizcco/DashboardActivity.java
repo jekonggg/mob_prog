@@ -40,7 +40,7 @@ public class DashboardActivity extends AppCompatActivity {
         username = intent.getStringExtra("USERNAME");  // Get the username from Intent
 
         // Initialize UI elements
-        addExpenseButton = findViewById(R.id.btnAddRecord_button);
+        addExpenseButton = findViewById(R.id.floating_center_button);
         dateToday = findViewById(R.id.date_today);
         totalLimitValue = findViewById(R.id.total_limit_value);
         expensesListView = findViewById(R.id.expenses_list_view);
@@ -73,6 +73,9 @@ public class DashboardActivity extends AppCompatActivity {
         });
 
         transactionsButton.setOnClickListener(view -> {
+            Intent intent2 = new Intent(DashboardActivity.this, TransactionsActivity.class);
+            intent2.putExtra("USERNAME", username);  // Pass the username to AddRecordActivity
+            startActivity(intent2);
         });
     }
 
