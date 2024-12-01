@@ -45,7 +45,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     if (isValidUser) {
                         // Navigate to HomeActivity (or any activity after successful login)
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
                         startActivity(intent);
                         finish(); // Close LoginActivity
                     } else {
@@ -60,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Navigate to the Password Reset screen (you can implement this)
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
                 startActivity(intent);
             }
         });

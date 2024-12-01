@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,8 +31,8 @@ public class ViewRecordsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view_expenses);
 
         // Initialize views
-        btnBack = findViewById(R.id.btnClose);  // Back button
-        recyclerView = findViewById(R.id.recyclerView);
+        ImageButton btnBack = findViewById(R.id.btnClose);  // Back button
+        ListView listView = findViewById(R.id.lvExpenses);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         databaseHelper = new DatabaseHelper(this);
@@ -43,7 +45,7 @@ public class ViewRecordsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Navigate back to MainActivity
-                Intent backIntent = new Intent(ViewRecordsActivity.this, MainActivity.class);
+                Intent backIntent = new Intent(ViewRecordsActivity.this, DashboardActivity.class);
                 startActivity(backIntent);
                 finish();  // Optionally finish the current activity to remove it from the back stack
             }

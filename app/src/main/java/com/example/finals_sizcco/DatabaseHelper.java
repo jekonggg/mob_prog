@@ -24,7 +24,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_UPDATED_AT = "updated_at"; // New column for timestamp
 
     // Table Name and Columns for "users" table
-    public static final String TABLE_USERS = "users";
+    public static final String TABLE_USERS = "users_data";
     public static final String COLUMN_USERS_ID = "id";
     public static final String COLUMN_USERNAME = "username";
     public static final String COLUMN_PASSWORD = "password";
@@ -61,6 +61,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        if (oldVersion < 2) {
+            // If upgrading from version 1 to version 2, add the "allowance_amount" column to the "users" table
+            String ADD_ALLOWANCE_AMOUNT_COLUMN = "ALTER TABLE " + TABLE_USERS +
+                    " ADD COLUMN " + COLUMN_ALLOWANCE_AMOUNT + " TEXT";
+            db.execSQL(ADD_ALLOWANCE_AMOUNT_COLUMN);
+        }
         if (oldVersion < 3) {
             // If upgrading from version 2 to version 3, add the "updated_at" column to the "records" table
             String ADD_UPDATED_AT_COLUMN = "ALTER TABLE " + TABLE_RECORDS +
@@ -68,6 +74,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             db.execSQL(ADD_UPDATED_AT_COLUMN);
         }
     }
+
 
     // Insert record method for "records" table
     public boolean insertRecord(String username, String price, String category, String date, String time, String notes) {
