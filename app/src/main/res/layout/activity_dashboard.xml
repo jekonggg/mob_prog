@@ -539,7 +539,7 @@
 
             <!-- Floating Action Button -->
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/floating_center_button"
+                android:id="@+id/add_expense_button"
                 android:layout_width="56dp"
                 android:layout_height="56dp"
                 android:src="@drawable/ic_add"

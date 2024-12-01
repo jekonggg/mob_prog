@@ -6,8 +6,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import androidx.appcompat.app.AppCompatActivity;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -16,28 +15,39 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 public class DashboardActivity extends AppCompatActivity {
 
     private TextView dateToday;
     private TextView totalLimitValue;
     private ListView expensesListView;
     private FloatingActionButton addExpenseButton;
-    private View transactionsButton; // The Transactions button
-    private View homeButton;         // The Home button
+    private View transactionsButton;
+    private View homeButton;
 
     private HashMap<String, Double> categoryExpenses;
+    private DatabaseHelper dbHelper;
+    private String currentUsername;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
+        // Initialize the DatabaseHelper
+        dbHelper = new DatabaseHelper(this);
+
+        // Get the logged-in user's username (this should be passed through Intent)
+        currentUsername = getIntent().getStringExtra("USERNAME");
+
         // Initialize UI elements
         dateToday = findViewById(R.id.date_today);
         totalLimitValue = findViewById(R.id.total_limit_value);
-        expensesListView = findViewById(R.id.expenses_list_view); // Initialize the ListView
+        expensesListView = findViewById(R.id.expenses_list_view);
         transactionsButton = findViewById(R.id.transactions_button);
         homeButton = findViewById(R.id.home_button);
+        addExpenseButton = findViewById(R.id.add_expense_button); // FloatingActionButton
 
         // Initialize expenses by category
         categoryExpenses = new HashMap<>();
@@ -54,6 +64,9 @@ public class DashboardActivity extends AppCompatActivity {
         // Populate list view with dummy data
         updateExpensesList();
 
+        // Fetch the user's allowance and display it as total limit
+        updateTotalLimit();
+
         // Set Transactions Button Click Listener
         transactionsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,41 +77,46 @@ public class DashboardActivity extends AppCompatActivity {
             }
         });
 
-        // Optionally handle Home Button (if it needs functionality)
-        homeButton.setOnClickListener(new View.OnClickListener() {
+        // Handle Floating Action Button click to navigate to AddRecords Activity
+        addExpenseButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                // Home button functionality here if needed, or leave as no-op
+            public void onClick(View v) {
+                // Redirect to AddRecords Activity
+                Intent intent = new Intent(DashboardActivity.this, AddRecordActivity.class);
+                intent.putExtra("USERNAME", currentUsername); // Pass the current user's username to AddRecords
+                startActivity(intent);
             }
         });
     }
 
     // Method to set the current date in the TextView
     private void setCurrentDate() {
-        SimpleDateFormat sdf = new SimpleDateFormat("MMMM dd, yyyy"); // Format as "Month day, year"
-        String currentDate = sdf.format(new Date()); // Get the current date as a string
-
-        // Set the formatted date as the text of the TextView
-        dateToday.setText(currentDate);  // This sets the current date in the TextView
+        SimpleDateFormat sdf = new SimpleDateFormat("MMMM dd, yyyy");
+        String currentDate = sdf.format(new Date());
+        dateToday.setText(currentDate);
     }
 
+    // Fetch and display the user's allowance amount (total limit)
+    private void updateTotalLimit() {
+        String allowanceAmount = dbHelper.getAllowanceAmount(currentUsername);
+        if (allowanceAmount != null) {
+            totalLimitValue.setText("$" + allowanceAmount);
+        } else {
+            totalLimitValue.setText("$0.00");
+        }
+    }
 
     private void updateExpensesList() {
-        // Create a list of category and expenses
         ArrayList<String> expenseDetails = new ArrayList<>();
         for (String category : categoryExpenses.keySet()) {
             expenseDetails.add(category + ": $" + categoryExpenses.get(category));
         }
 
-        // Use ArrayAdapter to bind the data to the ListView
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, expenseDetails);
         expensesListView.setAdapter(adapter);
     }
 
-    public void updateTotalLimit(double limit) {
-        totalLimitValue.setText("$" + limit);
-    }
-
+    // Method to add an expense for a given category (local to the dashboard activity)
     public void addExpense(String category, double amount) {
         double currentAmount = categoryExpenses.getOrDefault(category, 0.0);
         categoryExpenses.put(category, currentAmount + amount);

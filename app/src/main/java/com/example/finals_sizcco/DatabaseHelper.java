@@ -75,7 +75,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-
     // Insert record method for "records" table
     public boolean insertRecord(String username, String price, String category, String date, String time, String notes) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -142,6 +141,42 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 null, null, null);
     }
 
+    // Retrieve the allowance amount for a user
+    public String getAllowanceAmount(String username) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_USERS,  // The table we are querying
+                new String[]{COLUMN_ALLOWANCE_AMOUNT},  // The column we are interested in
+                COLUMN_USERNAME + "=?",  // The WHERE clause to filter by username
+                new String[]{username},  // The username value to match
+                null,  // GROUP BY (no grouping required)
+                null,  // HAVING (no additional filters)
+                null);  // ORDER BY (no sorting required)
+
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {  // Check if the cursor is not empty
+                int columnIndex = cursor.getColumnIndex(COLUMN_ALLOWANCE_AMOUNT); // Get the index of the column
+                if (columnIndex >= 0) { // Ensure the column exists
+                    String allowanceAmount = cursor.getString(columnIndex);  // Retrieve the value from the column
+                    cursor.close();
+                    db.close();
+                    return allowanceAmount;  // Return the allowance amount
+                } else {
+                    cursor.close();
+                    db.close();
+                    return null;  // Return null if the column index is invalid
+                }
+            } else {
+                cursor.close();
+                db.close();
+                return null;  // Return null if no rows were returned
+            }
+        } else {
+            db.close();
+            return null;  // Return null if cursor is null
+        }
+    }
+
+
     // Update a record in the "records" table
     public boolean updateRecord(int id, String price, String date, String time, String notes, String category) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -168,17 +203,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Validate username and password
     public boolean validateUserCredentials(String username, String password) {
         SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = null;
 
-        String[] selectionArgs = {username, password};
-        Cursor cursor = db.query(TABLE_USERS, null, COLUMN_USERNAME + "=? AND " + COLUMN_PASSWORD + "=?", selectionArgs, null, null, null);
+        try {
+            String[] selectionArgs = {username, password};
+            cursor = db.query(TABLE_USERS, null, COLUMN_USERNAME + "=? AND " + COLUMN_PASSWORD + "=?", selectionArgs, null, null, null);
 
-        // Check if the username and password match a record in the database
-        if (cursor != null && cursor.getCount() > 0) {
-            cursor.close();
-            return true; // User is valid
-        } else {
-            cursor.close();
-            return false; // Invalid user
+            // Check if the username and password match a record in the database
+            if (cursor != null && cursor.getCount() > 0) {
+                return true; // Valid user
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            db.close();
         }
+        return false; // Invalid user
     }
-}
+    }
+

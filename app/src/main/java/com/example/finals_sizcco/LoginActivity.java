@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,7 +12,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText usernameInput, passwordInput;
     private Button loginButton;
-    private TextView forgotPassword;
     private DatabaseHelper databaseHelper;
 
     @Override
@@ -25,7 +23,6 @@ public class LoginActivity extends AppCompatActivity {
         usernameInput = findViewById(R.id.usernameInput);
         passwordInput = findViewById(R.id.passwordInput);
         loginButton = findViewById(R.id.loginButton);
-        forgotPassword = findViewById(R.id.forgotPassword);
         databaseHelper = new DatabaseHelper(this);
 
         // Set onClickListener for the Login button
@@ -43,25 +40,17 @@ public class LoginActivity extends AppCompatActivity {
                     // Validate user credentials from the database
                     boolean isValidUser = databaseHelper.validateUserCredentials(username, password);
 
+                    // After validating user credentials
                     if (isValidUser) {
-                        // Navigate to HomeActivity (or any activity after successful login)
+                        // Create an intent to go to DashboardActivity
                         Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
+                        intent.putExtra("USERNAME", username); // Pass the username
                         startActivity(intent);
                         finish(); // Close LoginActivity
                     } else {
                         Toast.makeText(LoginActivity.this, "Invalid username or password", Toast.LENGTH_SHORT).show();
                     }
                 }
-            }
-        });
-
-        // Set onClickListener for "Forgot Password?"
-        forgotPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Navigate to the Password Reset screen (you can implement this)
-                Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
-                startActivity(intent);
             }
         });
     }

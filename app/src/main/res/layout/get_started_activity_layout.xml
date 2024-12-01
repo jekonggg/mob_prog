@@ -46,14 +46,12 @@
         android:backgroundTint="#50A65C" />
 
     <!-- Already have an account text link -->
-    <TextView
-        android:id="@+id/alreadyHaveAccount"
+    <Button
+        android:id="@+id/alreadyHaveAccountButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Already have an account?"
-        android:textSize="12sp"
-        android:textColor="#50A65C"
-        android:layout_marginTop="5dp"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center" />
+
 
 </LinearLayout>
